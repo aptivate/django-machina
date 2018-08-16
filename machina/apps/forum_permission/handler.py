@@ -135,9 +135,9 @@ class PermissionHandler(object):
         checker = self._get_checker(user)
 
         # A user can edit a post if...
-        #     he is a superuser
-        #     he is the original poster of the forum post
-        #     he belongs to the forum moderators
+        #     they are a superuser
+        #     they are the original poster of the forum post
+        #     they belong to the forum moderators
         is_author = self._is_post_author(post, user)
         can_edit = (user.is_superuser or
                     (
@@ -154,9 +154,9 @@ class PermissionHandler(object):
         checker = self._get_checker(user)
 
         # A user can delete a post if...
-        #     he is a superuser
-        #     he is the original poster of the forum post
-        #     he belongs to the forum moderators
+        #     they are a superuser
+        #     they are the original poster of the forum post
+        #     they belong to the forum moderators
         is_author = self._is_post_author(post, user)
         can_delete = (user.is_superuser or
                       (is_author and checker.has_perm('can_delete_own_posts', post.topic.forum)) or
@@ -200,7 +200,7 @@ class PermissionHandler(object):
         else:
             user_votes = user_votes.filter(voter=user)
 
-        # If the user has already voted, he can vote again if the vote changes are allowed
+        # If the user has already voted, they can vote again if the vote changes are allowed
         if user_votes.exists() and can_vote:
             can_vote = poll.user_changes
 
@@ -224,21 +224,21 @@ class PermissionHandler(object):
 
     def can_subscribe_to_topic(self, topic, user):
         """
-        Given a topic, checks whether the user can add it to his subscription list.
+        Given a topic, checks whether the user can add it to their subscription list.
         """
-        # A user can subscribe to topics if he is authenticated and if he has the permission to read
-        # the related forum. Of course a user can subscribe only if he has not already subscribed to
-        # the considered topic.
+        # A user can subscribe to topics if they are authenticated and if they have the permission
+        # to read the related forum. Of course a user can subscribe only if they have not already
+        # subscribed to the considered topic.
         return user.is_authenticated and not topic.has_subscriber(user) \
             and self._perform_basic_permission_check(topic.forum, user, 'can_read_forum')
 
     def can_unsubscribe_from_topic(self, topic, user):
         """
-        Given a topic, checks whether the user can remove it from his subscription list.
+        Given a topic, checks whether the user can remove it from their subscription list.
         """
-        # A user can unsubscribe from topics if he is authenticated and if he has the permission to
-        # read the related forum. Of course a user can unsubscribe only if he is already a
-        # a subscriber of the considered topic.
+        # A user can unsubscribe from topics if they are authenticated and if they have the
+        # permission to read the related forum. Of course a user can unsubscribe only if they are
+        #  already a subscriber of the considered topic.
         return user.is_authenticated and topic.has_subscriber(user) \
             and self._perform_basic_permission_check(topic.forum, user, 'can_read_forum')
 
@@ -429,11 +429,11 @@ class PermissionHandler(object):
                 # second one contains only granted permissions that are associated with specific
                 # forums. The third list contains non granted permissions.
                 globally_granted_group_perms = list(
-                    filter(lambda p: p.has_perm and p.forum is None, group_perms))
+                    filter(lambda p: p.has_perm and p.forum_id is None, group_perms))
                 per_forum_granted_group_perms = list(
-                    filter(lambda p: p.has_perm and p.forum is not None, group_perms))
+                    filter(lambda p: p.has_perm and p.forum_id is not None, group_perms))
                 per_forum_nongranted_group_perms = list(
-                    filter(lambda p: not p.has_perm and p.forum is not None, group_perms))
+                    filter(lambda p: not p.has_perm and p.forum_id is not None, group_perms))
 
                 # Now we can update the list of forums ids for which permissions are explicitly not
                 # granted.

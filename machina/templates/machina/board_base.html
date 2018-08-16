@@ -23,7 +23,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="/">django-machina</a>
+      <a class="navbar-brand" href="/">{% block brand %}{{ MACHINA_FORUM_NAME|default:"My forum" }}{% endblock %}</a>
     </div>
     <div class="collapse navbar-collapse">
       {% block header_collapse %}
@@ -54,7 +54,7 @@
       <div class="pull-right controls-link-wrapper">
       {% if not request.user.is_anonymous %}
         <a href="{% url 'forum_member:user_subscriptions' %}" class="btn btn-link"><i class="fa fa-bookmark-o ">&nbsp;</i>{% trans "Subscriptions" %}</a>
-        <a href="{% url 'forum_member:user_posts' request.user.id %}" class="btn btn-link"><i class="fa fa-comments-o ">&nbsp;</i>{% trans "View my messages" %}</a>
+        <a href="{% url 'forum_member:user_posts' request.user.id %}" class="btn btn-link"><i class="fa fa-comments-o ">&nbsp;</i>{% trans "View my posts" %}</a>
       {% endif %}
       {% get_permission 'can_access_moderation_queue' request.user as can_access_moderation_queue %}
       {% if can_access_moderation_queue %}
