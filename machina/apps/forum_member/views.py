@@ -230,6 +230,23 @@ class TopicSubscribtionListView(ListView):
     def dispatch(self, request, *args, **kwargs):
         return super(TopicSubscribtionListView, self).dispatch(request, *args, **kwargs)
 
+
+class ForumSubscriptionListView(ListView):
+    """
+    Provides a list of all forums to which the current user has subscribed.
+    """
+    model = Forum
+    context_object_name = 'forums'
+    template_name = 'forum_member/subscription_forum_list.html'
+
+    def get_queryset(self):
+        return self.request.user.forum_subscriptions.all()
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(ForumSubscriptionListView, self).dispatch(request, *args, **kwargs)
+
+
 class ForumSubscribeView(GenericSubscribeView):
     """
     Allows a user to subscribe to a specific forum.

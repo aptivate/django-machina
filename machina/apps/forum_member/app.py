@@ -20,6 +20,7 @@ class MemberApp(Application):
     topic_subscription_list_view = get_class('forum_member.views', 'TopicSubscribtionListView')
     forum_subscribe_view = get_class('forum_member.views', 'ForumSubscribeView')
     forum_unsubscribe_view = get_class('forum_member.views', 'ForumUnsubscribeView')
+    forum_subscription_list_view = get_class('forum_member.views', 'ForumSubscriptionListView')
 
     def get_urls(self):
         return [
@@ -33,6 +34,9 @@ class MemberApp(Application):
 
             url(_(r'^subscriptions/$'), self.topic_subscription_list_view.as_view(),
                 name='user_subscriptions'),
+
+            url(_(r'^forum_subscriptions/$'), self.forum_subscription_list_view.as_view(),
+                name='user_forum_subscriptions'),
 
             url(_(r'^topic/(?P<pk>\d+)/subscribe/$'),
                 self.topic_subscribe_view.as_view(), name='topic_subscribe'),
